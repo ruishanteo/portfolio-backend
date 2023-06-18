@@ -1,0 +1,61 @@
+import React from "react";
+
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+
+export function Header() {
+  return (
+    <AppBar
+      position="static"
+      sx={{
+        backgroundColor: "#576b86",
+      }}
+    >
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          <Typography
+            variant="h3"
+            noWrap
+            component="a"
+            href="/home"
+            sx={{
+              justifyContent: "center",
+              display: { xs: "none", md: "flex" },
+              flexGrow: 1,
+              fontFamily: "Didot",
+              fontWeight: 750,
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            backend
+          </Typography>
+
+          <Typography
+            variant="h4"
+            noWrap
+            component="a"
+            href="/home"
+            sx={{
+              justifyContent: "center",
+              display: { xs: "flex", md: "none" },
+              flexGrow: 1,
+              fontFamily: "Didot",
+              fontWeight: 750,
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            backend
+          </Typography>
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
+}

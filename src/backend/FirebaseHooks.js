@@ -4,7 +4,6 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import moment from "moment";
 
 import { auth } from "./Firebase";
 

@@ -6,7 +6,9 @@ import { auth } from "./backend/Firebase.js";
 
 import { Header } from "./components/Header.js";
 import { Home } from "./pages/Home.js";
+import { EditProject } from "./components/EditProject.js";
 import { NewProject } from "./components/NewProject.js";
+
 import Login from "./pages/Login";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -52,6 +54,10 @@ function App() {
                     <Route path="/home" element={<Home />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/new" element={<NewProject />} />
+                    <Route
+                      path="/project/:projectId"
+                      element={<EditProject />}
+                    />
                     <Route path="/*" element={<Home />} />
                   </Routes>
                 </>
