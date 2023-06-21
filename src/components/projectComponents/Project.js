@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import { deleteProject } from "../backend/projectsStore";
+import { deleteProject } from "../../backend/projectsStore";
 
 import {
   Box,
@@ -20,7 +20,23 @@ import {
 } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 
-export function Project({ project, onUpdate }) {
+const renderTech = (techName, techStack) => {
+  let srcUrl = "";
+  techStack.forEach((techData) => {
+    if (techData.name.toLowerCase() === techName.toLowerCase())
+      srcUrl = techData.iconImg;
+  });
+
+  return (
+    <Grid item key={techName}>
+      <Tooltip title={techName}>
+        <img src={srcUrl} alt={techName} width={30} />
+      </Tooltip>
+    </Grid>
+  );
+};
+
+export function Project({ project, techStack, onUpdate }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [openDelete, setOpenDelete] = useState(false);
@@ -30,8 +46,6 @@ export function Project({ project, onUpdate }) {
     setOpenDelete(false);
     onUpdate();
   };
-
-  const exceptions = { firebase: true };
 
   return (
     <Box
@@ -53,7 +67,7 @@ export function Project({ project, onUpdate }) {
             </IconButton>
           </Grid>
           <Grid item>
-            <IconButton onClick={() => navigate(`/project/${project.id}`)}>
+            <IconButton onClick={() => navigate(`/projects/${project.id}`)}>
               <Edit />
             </IconButton>
           </Grid>
@@ -99,20 +113,7 @@ export function Project({ project, onUpdate }) {
         <Grid item>
           <Typography variant="h6">Tech Stack:</Typography>
           <Grid container direction="row" spacing={1}>
-            {project.techStack.map((tech) => {
-              const type = exceptions[tech] ? "plain" : "original";
-              return (
-                <Grid item key={tech}>
-                  <Tooltip title={tech}>
-                    <img
-                      src={`https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${tech}/${tech}-${type}.svg`}
-                      alt={tech}
-                      width={30}
-                    />
-                  </Tooltip>
-                </Grid>
-              );
-            })}
+            {project.techStack.map((tech) => renderTech(tech, techStack))}
           </Grid>
         </Grid>
 

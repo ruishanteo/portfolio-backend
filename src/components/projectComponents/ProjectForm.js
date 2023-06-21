@@ -1,140 +1,30 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 
-import { Timestamp } from "firebase/firestore";
+import { useCallback, useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
-import {
-  ErrorMessage,
-  Field,
-  FieldArray,
-  Form,
-  Formik,
-  useField,
-  useFormikContext,
-} from "formik";
+import { fetchTechStack } from "../../backend/techStackStore";
+
+import { Field, Form, Formik } from "formik";
 
 import * as Yup from "yup";
 
 import {
   Box,
   Button,
-  Card,
-  CardContent,
   Grid,
-  IconButton,
   MenuItem,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
-import { Add, Remove } from "@mui/icons-material";
 
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
 
-import { createProject } from "../backend/projectsStore";
-
-const TechStackOptions = [
-  "angularjs",
-  "bash",
-  "firebase",
-  "flutter",
-  "git",
-  "github",
-  "gitlab",
-  "go",
-  "java",
-  "javascript",
-  "materialui",
-  "mysql",
-  "nextjs",
-  "nodejs",
-  "postgresql",
-  "python",
-  "react",
-  "redux",
-  "typescript",
-  "vscode",
-];
-
-const FormikDatePicker = (props) => {
-  const { name, ...restProps } = props;
-  const [field] = useField(name);
-  const { setFieldValue } = useFormikContext();
-  return (
-    <DatePicker
-      {...restProps}
-      value={field.value ?? null}
-      onChange={(val) => setFieldValue(name, val)}
-    />
-  );
-};
-
-const TextFieldWrapper = ({ as, name, touched, errors, ...props }) => {
-  return (
-    <Field
-      fullWidth
-      as={as}
-      name={name}
-      helperText={touched[name] && errors[name]}
-      error={errors[name] && touched[name]}
-      variant="filled"
-      autoComplete="on"
-      sx={{ mt: 1 }}
-      {...props}
-    />
-  );
-};
-
-const VariableField = ({
-  values,
-  name,
-  displayName,
-  emptyValue,
-  fieldCreator,
-}) => {
-  return (
-    <Card sx={{ mt: 1, background: "none" }}>
-      <CardContent>
-        <Typography>{displayName}</Typography>
-        <FieldArray
-          name={name}
-          render={(arrayHelpers) => (
-            <Box>
-              {values[name] && values[name].length > 0 ? (
-                values[name].map((value, index) => (
-                  <Box key={index}>
-                    {fieldCreator(name, index, value)}
-                    <IconButton onClick={() => arrayHelpers.remove(index)}>
-                      <Remove />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => arrayHelpers.insert(index + 1, emptyValue)}
-                    >
-                      <Add />
-                    </IconButton>
-                  </Box>
-                ))
-              ) : (
-                <Button
-                  variant="contained"
-                  onClick={() => arrayHelpers.push(emptyValue)}
-                  sx={{ mt: 1 }}
-                >
-                  <Typography>Add a {displayName}</Typography>
-                </Button>
-              )}
-            </Box>
-          )}
-        />
-        <ErrorMessage name={name} />
-      </CardContent>
-    </Card>
-  );
-};
+import { VariableField } from "../form/VariableField";
+import { TextFieldWrapper } from "../form/TextFieldWrapper";
+import { FormikDatePicker } from "../form/FormikDatePicker";
 
 Yup.addMethod(Yup.array, "unique", function (message, mapper = (a) => a) {
   return this.test("unique", message, function (list) {
@@ -142,9 +32,25 @@ Yup.addMethod(Yup.array, "unique", function (message, mapper = (a) => a) {
   });
 });
 
-export const NewProject = () => {
+export const ProjectForm = ({ title, initialValues, onSubmit }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+
+  const techstack = useSelector((state) => state.techstack.techStack);
+
+  const onUpdate = useCallback(() => {
+    setLoading(true);
+    dispatch(fetchTechStack);
+    setLoading(false);
+  }, [dispatch]);
+
+  useEffect(() => {
+    onUpdate();
+  }, [onUpdate]);
+
+  if (loading) return <></>;
+
+  const techStackOptions = techstack.map((tech) => tech.name);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -159,20 +65,11 @@ export const NewProject = () => {
           }}
         >
           <Typography variant="h4" sx={{ fontWeight: 450 }}>
-            NEW PROJECT
+            {title}
           </Typography>
 
           <Formik
-            initialValues={{
-              thumbnailImg: "",
-              fullSizedImg: "",
-              title: "",
-              description: "",
-              startDate: "",
-              endDate: dayjs(),
-              techStack: [],
-              links: [],
-            }}
+            initialValues={initialValues}
             validationSchema={Yup.object().shape({
               title: Yup.string().required("Required"),
               description: Yup.string().required("Required"),
@@ -181,17 +78,9 @@ export const NewProject = () => {
                 .of(Yup.string())
                 .unique("Please enter only unique tech stack"),
             })}
-            onSubmit={(values, { setSubmitting }) => {
-              dispatch(
-                createProject({
-                  ...values,
-                  startDate: Timestamp.fromDate(new Date(values.startDate)),
-                  endDate: Timestamp.fromDate(new Date(values.endDate)),
-                })
-              );
-              setSubmitting(false);
-              navigate("/home");
-            }}
+            onSubmit={(values, { setSubmitting }) =>
+              onSubmit(values, setSubmitting)
+            }
           >
             {({ errors, touched, values, isSubmitting }) => (
               <Form>
@@ -263,7 +152,7 @@ export const NewProject = () => {
                         fullWidth
                       >
                         <MenuItem value="">Please select an option</MenuItem>
-                        {TechStackOptions.map((option) => (
+                        {techStackOptions.map((option) => (
                           <MenuItem key={option} value={option}>
                             {option}
                           </MenuItem>
