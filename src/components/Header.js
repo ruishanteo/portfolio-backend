@@ -14,7 +14,7 @@ export function Header() {
     <AppBar
       position="static"
       sx={{
-        backgroundColor: "#576b86",
+        backgroundColor: "primary.main",
       }}
     >
       <Container maxWidth="xl">
