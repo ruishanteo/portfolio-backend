@@ -47,8 +47,16 @@ const experiencesSlice = createSlice({
     saveExperienceToStore: (state, action) => {
       state.experience = action.payload;
     },
+    resetStore: (state) => {
+      state.experiences = [];
+      state.experience = undefined;
+    },
   },
 });
+
+export function clearStore(dispatch, getState) {
+  dispatch(experiencesSlice.actions.resetStore());
+}
 
 export async function fetchExperiences(dispatch, getState) {
   const response = await getDocs(collection(db, "experiences"));

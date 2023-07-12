@@ -46,6 +46,10 @@ const projectsSlice = createSlice({
     saveProjectToStore: (state, action) => {
       state.project = action.payload;
     },
+    resetStore: (state) => {
+      state.projects = [];
+      state.project = undefined;
+    },
   },
 });
 
@@ -89,6 +93,10 @@ export function readProject(id) {
       );
     }
   };
+}
+
+export function clearStore(dispatch, getState) {
+  dispatch(projectsSlice.actions.resetStore());
 }
 
 export function editProject(project, id) {
