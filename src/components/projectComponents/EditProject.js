@@ -8,7 +8,11 @@ import dayjs from "dayjs";
 
 import { ProjectForm } from "./ProjectForm";
 
-import { editProject, readProject } from "../../backend/projectsStore";
+import {
+  clearStore,
+  editProject,
+  readProject,
+} from "../../backend/projectsStore";
 
 export const EditProject = () => {
   const dispatch = useDispatch();
@@ -27,7 +31,10 @@ export const EditProject = () => {
 
   useEffect(() => {
     onUpdate();
-  }, [onUpdate]);
+    return () => {
+      dispatch(clearStore);
+    };
+  }, [dispatch, onUpdate]);
 
   if (loading || !project) {
     return <></>;

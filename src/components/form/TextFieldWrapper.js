@@ -11,7 +11,7 @@ export const TextFieldWrapper = ({ as, name, touched, errors, ...props }) => {
       error={errors[name] && touched[name]}
       variant="filled"
       autoComplete="on"
-      sx={{ mt: 1 }}
+      sx={{ mt: 1, width: "80vw" }}
       {...props}
     />
   );

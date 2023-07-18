@@ -8,7 +8,11 @@ import dayjs from "dayjs";
 
 import { ExperienceForm } from "./ExperienceForm";
 
-import { editExperience, readExperience } from "../../backend/experiencesStore";
+import {
+  clearStore,
+  editExperience,
+  readExperience,
+} from "../../backend/experiencesStore";
 
 export const EditExperience = () => {
   const dispatch = useDispatch();
@@ -27,7 +31,10 @@ export const EditExperience = () => {
 
   useEffect(() => {
     onUpdate();
-  }, [onUpdate]);
+    return () => {
+      dispatch(clearStore);
+    };
+  }, [dispatch, onUpdate]);
 
   if (loading || !experience) {
     return <></>;

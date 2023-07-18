@@ -14,22 +14,28 @@ import {
 } from "@mui/material";
 
 import { TextFieldWrapper } from "../form/TextFieldWrapper";
+import { ArrowLeft, Send } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 export const TechStackForm = ({ title, initialValues, onSubmit }) => {
+  const navigate = useNavigate();
   return (
     <Box align="center">
-      <Box
-        sx={{
-          padding: 5,
-          mt: 2,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
+      <Box sx={{ mt: 5 }} width="80vw">
         <Typography variant="h4" sx={{ fontWeight: 450 }}>
           {title}
         </Typography>
+
+        <Box align="left">
+          <Button
+            sx={{ mb: 5 }}
+            variant="contained"
+            startIcon={<ArrowLeft />}
+            onClick={() => navigate(-1)}
+          >
+            Back
+          </Button>
+        </Box>
 
         <Formik
           enableReinitialize={true}
@@ -88,8 +94,9 @@ export const TechStackForm = ({ title, initialValues, onSubmit }) => {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  sx={{ mt: 4 }}
+                  sx={{ mt: 4, width: 200 }}
                   variant="contained"
+                  endIcon={<Send />}
                 >
                   Submit
                 </Button>
