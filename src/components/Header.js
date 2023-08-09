@@ -16,7 +16,7 @@ export function Header() {
             variant="h3"
             noWrap
             component="a"
-            href="/home"
+            href="/#/"
             sx={{
               justifyContent: "center",
               display: { xs: "none", md: "flex" },
