@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter as Router, Route, Routes } from "react-router-dom";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Provider as ReduxProvider } from "react-redux";
@@ -57,68 +57,58 @@ function App() {
 
   return (
     <>
-      <div className="App">
-        <ThemeProvider theme={theme}>
-          <ReduxProvider store={store}>
-            <Router>
-              {user ? (
-                <>
-                  <Header />
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
+      <ThemeProvider theme={theme}>
+        <ReduxProvider store={store}>
+          <Router>
+            {user ? (
+              <>
+                <Header />
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/home" element={<Home />} />
+                  <Route path="/login" element={<Login />} />
 
-                    <Route
-                      exact
-                      path="/experiences/new"
-                      element={<NewExperience />}
-                    />
-                    <Route
-                      exact
-                      path="/experiences/:experienceId"
-                      element={<EditExperience />}
-                    />
-                    <Route
-                      exact
-                      path="/experiences"
-                      element={<Experiences />}
-                    />
+                  <Route
+                    exact
+                    path="/experiences/new"
+                    element={<NewExperience />}
+                  />
+                  <Route
+                    exact
+                    path="/experiences/:experienceId"
+                    element={<EditExperience />}
+                  />
+                  <Route exact path="/experiences" element={<Experiences />} />
 
-                    <Route
-                      exact
-                      path="/projects/new"
-                      element={<NewProject />}
-                    />
-                    <Route
-                      exact
-                      path="/projects/:projectId"
-                      element={<EditProject />}
-                    />
-                    <Route exact path="/projects" element={<Projects />} />
+                  <Route exact path="/projects/new" element={<NewProject />} />
+                  <Route
+                    exact
+                    path="/projects/:projectId"
+                    element={<EditProject />}
+                  />
+                  <Route exact path="/projects" element={<Projects />} />
 
-                    <Route exact path="/techstack/new" element={<NewTech />} />
-                    <Route
-                      exact
-                      path="/techstack/:techId"
-                      element={<EditTech />}
-                    />
-                    <Route exact path="/techstack" element={<TechStack />} />
+                  <Route exact path="/techstack/new" element={<NewTech />} />
+                  <Route
+                    exact
+                    path="/techstack/:techId"
+                    element={<EditTech />}
+                  />
+                  <Route exact path="/techstack" element={<TechStack />} />
 
-                    <Route path="/*" element={<Home />} />
-                  </Routes>
-                </>
-              ) : (
-                <>
-                  <Routes>
-                    <Route path="/*" element={<Login />} />
-                  </Routes>
-                </>
-              )}
-            </Router>
-          </ReduxProvider>
-        </ThemeProvider>
-      </div>
+                  <Route path="/*" element={<Home />} />
+                </Routes>
+              </>
+            ) : (
+              <>
+                <Routes>
+                  <Route path="/*" element={<Login />} />
+                </Routes>
+              </>
+            )}
+          </Router>
+        </ReduxProvider>
+      </ThemeProvider>
     </>
   );
 }
