@@ -1,13 +1,6 @@
 import React from "react";
 
-import {
-  AppBar,
-  Box,
-  Button,
-  Container,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { AppBar, Container, Toolbar, Typography } from "@mui/material";
 
 export function Header() {
   return (
