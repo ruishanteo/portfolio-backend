@@ -30,12 +30,12 @@ const techStackSlice = createSlice({
 
 export async function fetchTechStack(dispatch, getState) {
   const response = await getDocs(collection(db, "techStack"));
-  const techStack = response.docs.map((doc) => {
-    return {
+  const techStack = response.docs
+    .map((doc) => ({
       ...doc.data(),
       id: doc.id,
-    };
-  });
+    }))
+    .sort((a, b) => a.name > b.name);
   dispatch(techStackSlice.actions.saveTechStackToStore(techStack));
 }
 

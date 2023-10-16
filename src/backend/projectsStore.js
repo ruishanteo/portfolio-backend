@@ -61,6 +61,7 @@ export async function fetchProjects(dispatch, getState) {
     return {
       ...data,
       id: doc.id,
+      techStack: data.techStack.sort((a, b) => a > b),
       startDate: convertTime(data.startDate.toDate()),
       endDate: convertTime(data.endDate.toDate()),
     };
