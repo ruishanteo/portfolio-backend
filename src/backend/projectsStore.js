@@ -55,17 +55,22 @@ const projectsSlice = createSlice({
 
 export async function fetchProjects(dispatch, getState) {
   const response = await getDocs(collection(db, "projects"));
+  const projects = response.docs
+    .map((doc) => {
+      const data = doc.data();
+      return {
+        ...data,
+        id: doc.id,
+        techStack: data.techStack.sort((a, b) => a > b),
+      };
+    })
+    .sort((a, b) => a.endDate < b.endDate)
+    .map((doc) => ({
+      ...doc,
+      startDate: convertTime(doc.startDate.toDate()),
+      endDate: convertTime(doc.endDate.toDate()),
+    }));
 
-  const projects = response.docs.map((doc) => {
-    const data = doc.data();
-    return {
-      ...data,
-      id: doc.id,
-      techStack: data.techStack.sort((a, b) => a > b),
-      startDate: convertTime(data.startDate.toDate()),
-      endDate: convertTime(data.endDate.toDate()),
-    };
-  });
   dispatch(projectsSlice.actions.saveProjectsToStore(projects));
 }
 
