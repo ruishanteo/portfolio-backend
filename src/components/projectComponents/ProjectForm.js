@@ -141,6 +141,7 @@ export const ProjectForm = ({ title, initialValues, onSubmit }) => {
                       <FormikDatePicker
                         name="startDate"
                         label="Start Date"
+                        views={["year", "month"]}
                         slotProps={{
                           textField: { variant: "filled", sx: { mt: 1 } },
                         }}
@@ -150,6 +151,7 @@ export const ProjectForm = ({ title, initialValues, onSubmit }) => {
                       <FormikDatePicker
                         name="endDate"
                         label="End Date"
+                        views={["year", "month"]}
                         slotProps={{
                           textField: { variant: "filled", sx: { mt: 1 } },
                         }}

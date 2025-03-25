@@ -89,6 +89,7 @@ export const ExperienceForm = ({ title, initialValues, onSubmit }) => {
                       <FormikDatePicker
                         name="startDate"
                         label="Start Date"
+                        views={["year", "month"]}
                         slotProps={{
                           textField: {
                             variant: "filled",
@@ -101,6 +102,7 @@ export const ExperienceForm = ({ title, initialValues, onSubmit }) => {
                       <FormikDatePicker
                         name="endDate"
                         label="End Date"
+                        views={["year", "month"]}
                         slotProps={{
                           textField: {
                             variant: "filled",
